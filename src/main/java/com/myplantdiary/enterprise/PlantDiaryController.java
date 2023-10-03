@@ -1,6 +1,8 @@
 package com.myplantdiary.enterprise;
 
 import com.myplantdiary.enterprise.dto.Specimen;
+import com.myplantdiary.enterprise.service.ISpecimenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 
 public class PlantDiaryController{
+
+    @Autowired
+    ISpecimenService specimenService;
 
     /**
      * Handle the root (/) endpoint and return a start page
@@ -28,6 +33,18 @@ public class PlantDiaryController{
 
         return "start";
     }
+
+    @RequestMapping("/saveSpecimen")
+    public String saveSpecimen(Specimen specimen) {
+        try{
+            specimenService.save(specimen);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return "start";
+        }
+        return "start";
+    }
+
 
     /**
      * Endpoint to fetch specimens
@@ -61,4 +78,6 @@ public class PlantDiaryController{
     public ResponseEntity deleteSpecimen(@PathVariable("id") String id){
         return new ResponseEntity(HttpStatus.OK);
     }
+
+
 }
